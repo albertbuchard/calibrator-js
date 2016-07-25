@@ -53,7 +53,7 @@ For production use the compiled and minified file : calibrator-compiled.min.js
 </script>
 ```
 
-**A possible implementation is given in calibrator/example/index.html.**
+**A possible implementation is given in example/index.html.**
  
 
 ## Documentation
@@ -61,9 +61,9 @@ https://albertbuchard.github.io/calibrator-js-docs/
 
 
 ## Authors
-Albert Buchard
-Amanda Yung
-Augustin Joessel
+* Albert Buchard
+* Amanda Yung
+* Augustin Joessel
 
 
 ## LICENCE
