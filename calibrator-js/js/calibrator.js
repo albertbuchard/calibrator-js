@@ -13,13 +13,13 @@
 
 /* =============== Set-up =============== */
 
-/** Get the absolute path of the library */
+/* === Get the absolute path of the library === */
 var scripts = document.getElementsByTagName("script");
 var calibratorFullpath = scripts[scripts.length - 1].src;
 var delimiterIndices = findAllIndices("/", calibratorFullpath);
 calibratorFullpath = calibratorFullpath.substr(0, delimiterIndices[delimiterIndices.length - 2]);
 
-/** Add the calibrator css once the page is loaded */
+/* === Add the calibrator css once the page is loaded === */
 document.addEventListener("DOMContentLoaded", function(event) {
   var head = document.getElementsByTagName('head')[0];
   var link = document.createElement('link');
@@ -35,6 +35,10 @@ document.addEventListener("DOMContentLoaded", function(event) {
 class Calibrator {
   /**
    * Setup of the calibrator object
+   * @param  {function}  callbackWhenClosed function to call when the calibrator is dismissed. 
+   * An object containing relevant calibration information is passed as argument.
+   * @param  {Boolean} showWhenReady      If true, the calibrator is displayed after templates are loaded.
+   * @return {Calibrator}                   
    */
   constructor(callbackWhenClosed = null, showWhenReady = true) {
     /**
@@ -57,6 +61,8 @@ class Calibrator {
     /**
      * Object containing the file path of all the views
      * @type {Object}
+     * @const
+     * @private
      */
     this.VIEWS_PATHS = {
       container: this.calibratorFullpath + "/views/calibrator-container.template",
@@ -75,6 +81,8 @@ class Calibrator {
 
     /**
      * Image keys
+     * @const
+     * @private
      */
     this.IMAGE_KEY_CREDITCARD = "creditCard";
     this.IMAGE_KEY_CD = "cd";
@@ -82,6 +90,8 @@ class Calibrator {
     /**
      * Images object with [path, [width, height], real width in cm, maxScaling]
      * @type {Object}
+     * @const
+     * @private
      */
     this.IMAGES = {
       [this.IMAGE_KEY_CREDITCARD]: [this.calibratorFullpath + "/img/card.png", [384, 242], 8.6, 1.2],
@@ -91,31 +101,40 @@ class Calibrator {
     /**
      * Distance of the subject from the screen in cm, default to 50 cm (arm length)
      * @type {Number}
+     * @const
+     * @public
      */
-    this.DISTANCE_FROM_SCREEN = 50;
+    this.distanceFromScreen = 50;
 
     /**
      * Heigth of the canvas in pixels
      * @type {Number}
+     * @private
      */
     this.canvasHeight = 400;
 
     /**
      * Number of different gray shades for the brightness calibration 
      * @type {Number}
+     * @const
+     * @private
      */
     this.BRIGHTNESS_NUMBER_OF_CONTRASTS = 12;
 
     /**
      * Object storing the cached image to draw on the canvas
      * @type {Object}
+     * @private
      */
     this.cachedImages = {};
 
+    /** Preload images */
     this.preloadImages();
 
-    /**
-     * Steps contstants
+    /** 
+     * Steps constants 
+     * @const
+     * @private
      */
     this.STEP_TITLES = ["Step 1: Screen size calibration", "Step 2: Contrast and brightness", "Step 3: Summary"];
 
@@ -128,6 +147,8 @@ class Calibrator {
 
     /**
      * Buttons value attributes
+     * @const
+     * @private
      */
     this.BUTTON_SIZEKNOWN = "s1:sizeKnown";
     this.BUTTON_SIZEUNKNOWN = "s1:sizeUnknown";
@@ -142,6 +163,12 @@ class Calibrator {
 
     this.currentStep = this.STEP_SCREENSIZE_ASK_IFKNOWS;
 
+    /**
+     * Desired precision of the text output
+     * @type {Number}
+     * @const
+     * @private
+     */
     this.FLOAT_PRECISION = 2;
 
     /**
@@ -149,18 +176,30 @@ class Calibrator {
      */
 
     /**
-     * Screen real diagonal size in inches
-     * @type {[type]}
+     * Private variable holding screen real diagonal size in inches
+     * @type {Number}
+     * @private
      */
     this._diagonalSize = null;
 
+    /**
+     * Private variable holding the current image key
+     * @type {string}
+     * @private
+     */
     this._currentImage = null;
 
+    /**
+     * Private variable holding the image scale ratio between 0 and 1.
+     * @type {Number}
+     * @private
+     */
     this._imageRatio = 0.5;
 
     /**
      * Determines if the calibrator automatically shows after loading of templates.
      * @type {boolean}
+     * @private
      */
     this._showWhenReady = (showWhenReady == true) ? true : false;
 
@@ -176,7 +215,7 @@ class Calibrator {
      *   * diagonalSizeInPx
      *     + diagonal size in inches
      *   * distanceFromScreenInCm
-     *     + distance from the screen in cm (calibrator.DISTANCE_FROM_SCREEN)
+     *     + distance from the screen in cm (calibrator.distanceFromScreen)
      *   * pixelsPerInch
      *     + computed pixel density in pixels per inch
      *   * pixelsPerDegree
@@ -220,6 +259,7 @@ class Calibrator {
   /**
    * Called after all templates are loaded and compiled.
    * @return {undefined}
+   * @private
    */
   templatesAreLoaded() {
     console.log("Calibrator.js : All templates are loaded");
@@ -227,7 +267,10 @@ class Calibrator {
     /** Add calibrator div to DOM */
     this.addToDom();
 
-    /** Setup container reference */
+    /**
+     * Container element reference 
+     * @type {object}
+     */
     this.container = $(".calibrator-container");
 
     /** Toggle display depending on preset showWhenReady */
@@ -238,6 +281,10 @@ class Calibrator {
 
   }
 
+  /**
+   * Adds the calibrator container template to the DOM
+   * @private 
+   */
   addToDom() {
     this.templateManager.renderInTarget("container", {
       title: this.currentTitle,
@@ -245,8 +292,53 @@ class Calibrator {
     }, "body");
   }
 
+  /* ======== Appearence Methods ======== */
+
+  /**
+   * Shows the calibrator.
+   * @return {undefined}
+   * @public 
+   */
+  show() {
+    $(this.container).fadeIn(200);
+  }
+
+  /**
+   * Hides the calibrator.
+   * @return {undefined} 
+   * @public
+   */
+  hide() {
+    $(this.container).fadeOut(200);
+  }
+
+  /**
+   * Toggle the display of the calibrator.
+   * @return {undefined} 
+   * @public
+   */
+  toggle() {
+    $(this.container).toggle(200);
+  }
+
+  /**
+   * Toggle display of the information div.
+   * @return {undefined} 
+   * @public
+   */
+  toggleInfo() {
+    $(".calibrator-info-content").toggle(200);
+  }
+
+  /* ======== View Update Methods ======== */
+
+  /**
+   * Updates the view with the appropriate title and content for the current step.
+   * @return {undefined} 
+   * @private
+   */
   updateView() {
-    /** @type {object} keep reference to current object for the callbacks */
+    /** keep reference to current object for the callbacks */
     var thisObject = this;
 
     /** Update top guide */
@@ -538,8 +630,7 @@ class Calibrator {
 
   /**
    * Function called when calibrator is dismissed. Call the callbackWhenClosed function if it was provided, else just print the result of the calibrator in the console.
-   * @param  {[type]} status [description]
-   * @return {[type]}        [description]
+   * @param  {Number} status 0 for an early exit. 1 for a normal exit.
    */
   callbackNow(status) {
     var returnObject = {
@@ -555,7 +646,7 @@ class Calibrator {
     if (this.diagonalSize) {
       returnObject.status = status;
       returnObject.diagonalSize = this.diagonalSize;
-      returnObject.distanceFromScreenInCm = this.DISTANCE_FROM_SCREEN;
+      returnObject.distanceFromScreenInCm = this.distanceFromScreen;
       returnObject.pixelsPerInch = this.pixelsPerInch;
       returnObject.pixelsPerDegree = this.pixelsPerDegree;
 
@@ -593,19 +684,18 @@ class Calibrator {
     if ($(".calibrator-canvas").length) {
       var canvas = $(".calibrator-canvas")[0];
 
-      /** Make it visually fill the positioned parent */
+      /* Make it visually fill the positioned parent */
       canvas.style.width = '100%';
       canvas.style.height = this.canvasHeight + 'px';
 
-      /** then set the internal size to match */
+      /* then set the internal size to match */
       canvas.width = canvas.offsetWidth;
       canvas.height = canvas.offsetHeight;
     }
   }
 
   /**
-   * Function handling canvas resize and redraw when 
-   * @return {[type]} [description]
+   * Function handling canvas resize and redraw 
    */
   canvasResized() {
     this.fitCanvasToContainer();
@@ -665,6 +755,7 @@ class Calibrator {
 
   /**
    * Set the diagonal size in inches from the pixel per inches calculate fron the scaled currentImage drawn on the canvas.
+   * @private
    */
   setDiagonalSizeFromRatio() {
     if (this.currentImage) {
@@ -716,24 +807,6 @@ class Calibrator {
     // window.pxperdeg = Math.PI / 180 * screen.width * distance / screenWidthCM;
     // window.monitorSize = parseFloat($("#screenInput").val());
 
-  }
-
-  /* ======== Appearence Methods ======== */
-
-  show() {
-    $(this.container).fadeIn(200);
-  }
-
-  hide() {
-    $(this.container).fadeOut(200);
-  }
-
-  toggle() {
-    $(this.container).toggle(200);
-  }
-
-  toggleInfo() {
-    $(".calibrator-info-content").toggle(200);
   }
 
   /* =============== Getters and Setters =============== */
@@ -811,6 +884,7 @@ class Calibrator {
   /**
    * Sets physical screen diagonal in inches. Key variable of the object.
    * @return {undefined} 
+   * @private
    */
   set diagonalSize(value) {
     if (value == null) {
@@ -889,7 +963,7 @@ class Calibrator {
    */
   get pixelsPerDegree() {
     if (this.diagonalSize) {
-      var visualAngleInRadian = 2 * Math.atan((screen.availWidth / this.pixelsPerCm) / (2 * this.DISTANCE_FROM_SCREEN));
+      var visualAngleInRadian = 2 * Math.atan((screen.availWidth / this.pixelsPerCm) / (2 * this.distanceFromScreen));
       var degreePerRadian = (180 / Math.PI);
       return (screen.availWidth / (degreePerRadian * visualAngleInRadian));
     } else {
@@ -901,8 +975,7 @@ class Calibrator {
 
   /**
    * Sets the image scale ratio 
-   * @param  {[type]} ratio Real number between 0 and 1
-   * @return {undefined} 
+   * @param  {Number} ratio Real number between 0 and 1
    * @private     
    */
   set imageRatio(ratio) {
@@ -914,7 +987,7 @@ class Calibrator {
   }
 
   /**
-   * Return the image scale ratio
+   * Current image scale ratio
    * @return {Number} Ratio between 0 and 1 (this ratio will then be multiplied by the maximum scaling factor for each image to produce the observed size)
    */
   get imageRatio() {
@@ -951,6 +1024,7 @@ class Calibrator {
   /**
    * Get physical width of the object represented by the current image.
    * @return {Number} Size in cm 
+   * @private
    */
   get currentImagePhysicalWidthInCm() {
     if (this.currentImage) {
@@ -963,6 +1037,7 @@ class Calibrator {
   /**
    * Get physical width of the object represented by the current image.
    * @return {Number} Size in inches 
+   * @private
    */
   get currentImagePhysicalWidthInInches() {
     if (this.currentImage) {
@@ -975,6 +1050,7 @@ class Calibrator {
   /**
    * Returns the scaled height depending on the selected scale factor (imageRatio) and maximum scaling of the image.
    * @return {Number} Scaled height in pixel
+   * @private
    */
   get currentImageScaledHeightInPx() {
     if (this.currentImage) {
@@ -1020,7 +1096,7 @@ class TemplateManager {
    */
   constructor(viewPaths = mandatory(), callbackWhenLoaded = null) {
 
-    /** Allow double curly bracket syntax in the template html: {{variable}} */
+    /* Allow double curly bracket syntax in the template html: {{variable}} */
     _.templateSettings = {
       interpolate: /\{\{(.+?)\}\}/g
     };
@@ -1046,10 +1122,10 @@ class TemplateManager {
       }
     }
 
-    /** @type {object} keeps reference to the current object */
+    /* Keeps reference to the current object */
     var thisObject = this;
 
-    /** Caches every templates asynchronously */
+    /* Caches every templates asynchronously */
     _.each(this.viewPaths, function(value, key, list) {
       $.get(thisObject.viewPaths[key], function(raw) {
 
@@ -1155,11 +1231,16 @@ class TemplateManager {
    * Stores a template from raw html as a underscore template.
    * @param  {string} name template name
    * @param  {string} raw  template html 
-   * @return {[type]}      [description]
    */
   store(name, raw) {
     this.cached[name] = _.template(raw);
   }
+
+  /**
+   * Return the path of the specified template
+   * @param  {string} name template name
+   * @return {string}      template url
+   */
   urlFor(name) {
     return (this.viewPaths[name]);
   }
@@ -1179,13 +1260,13 @@ function mandatory(param = "") {
 
 /**
  * Find all the positions of a needle in a haystack string
- * @param  {[type]} needle   string to find
- * @param  {[type]} haystack string to scan
+ * @param  {string} needle   string to find
+ * @param  {string} haystack string to scan
  * @return {Array}  Either -1 if no match is found or an array containing the indicies
  */
 function findAllIndices(needle = mandatory(), haystack = mandatory()) {
   var indices = [];
-  for (i = 0; i < haystack.length; i++) {
+  for (var i = 0; i < haystack.length; i++) {
     if ((haystack.substr(i, needle.length)) === needle) {
       indices.push(i);
     }

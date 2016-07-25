@@ -8,7 +8,7 @@
         </script>
         <script crossorigin="anonymous" integrity="sha384-FZY+KSLVXVyc1qAlqH9oCx1JEOlQh6iXfw3o2n3Iy32qGjXmUPWT9I0Z9e9wxYe3" src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js">
         </script>
-        <script src="../js/calibrator.js" type="text/javascript">
+        <script src="../js/calibrator-compiled.min.js" type="text/javascript">
         </script>
         <link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" rel="stylesheet"/>
         <title>
@@ -29,19 +29,19 @@
                 /**
                  * After DOM is completely loaded, create a calibrator instance. Provided arguement to the constructor is the callbackWhenClosed. It is call whenever the calibrator is dismissed. 
                  * calibratorOutput Argument sent to the callback is an object with keys 
-     *   * status 
-     *     + 0 the calibrator did not finish normally
-     *     + 1 calibrator finish normally
-     *   * diagonalSize 
-     *     + diagonal size in inches
-     *   * diagonalSizeInPx
-     *     + diagonal size in inches
-     *   * distanceFromScreenInCm
-     *     + distance from the screen in cm (calibrator.DISTANCE_FROM_SCREEN)
-     *   * pixelsPerInch
-     *     + computed pixel density in pixels per inch
-     *   * pixelsPerDegree
-     *     + computed pixels per degree
+                 *   * status 
+                 *     + 0 the calibrator did not finish normally
+                 *     + 1 calibrator finish normally
+                 *   * diagonalSize 
+                 *     + diagonal size in inches
+                 *   * diagonalSizeInPx
+                 *     + diagonal size in inches
+                 *   * distanceFromScreenInCm
+                 *     + distance from the screen in cm (calibrator.DISTANCE_FROM_SCREEN)
+                 *   * pixelsPerInch
+                 *     + computed pixel density in pixels per inch
+                 *   * pixelsPerDegree
+                 *     + computed pixels per degree
                  * @param  {[type]} object) {            console.log(object); } [description]
                  * @return {[type]}         [description]
                  */

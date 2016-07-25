@@ -1,0 +1,49 @@
+{
+  "name": "calibrator-js",
+  "version": "1.0.0",
+  "description": "Screen calibrator boilerplate for web based experiments.",
+  "main": "calibrator-js/js/calibrator.js",
+  "scripts": {
+    "generate-docs": "jsdoc -c jsdoc.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/albertbuchard/calibrator-js.git"
+  },
+  "keywords": [
+    "frontend",
+    "javascript",
+    "web",
+    "screen",
+    "calibration",
+    "experiment",
+    "science",
+    "pixel",
+    "density",
+    "ppi",
+    "dpi",
+    "ppd",
+    "visual",
+    "angle"
+  ],
+  "author": {
+    "name": "Albert Buchard",
+    "email": "albert.buchard@epfl.ch"
+  },
+  "contributors": [
+    {
+      "name": "Amanda Yung"
+    },
+    {
+      "name": "Augustin Joessel"
+    }
+  ],
+  "license": "(MIT OR Apache-2.0)",
+  "bugs": {
+    "url": "https://github.com/albertbuchard/calibrator-js/issues"
+  },
+  "homepage": "https://github.com/albertbuchard/calibrator-js#readme",
+  "devDependencies": {
+    "jsdoc-baseline": "https://github.com/hegemonic/baseline/tarball/master"
+  }
+}
