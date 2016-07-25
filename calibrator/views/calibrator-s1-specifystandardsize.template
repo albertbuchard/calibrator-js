@@ -1,0 +1,29 @@
+<div class="col-xs-12">
+    <p>
+        Place your chosen object against your screen and move the slider until the image is the same size as the object.
+    </p>
+    <p>
+        Current approximated diagonal size :
+        <span class="calibrator-diagonal-size-inches">
+        </span>
+    </p>
+</div>
+<div class="col-xs-12">
+    <canvas class="calibrator-canvas">
+        Your browser does not support the canvas element and will not be able to calibrate.
+    </canvas>
+    <input class="calibrator-size-range" max="1000" min="0" type="range" value="500"/>
+</div>
+<div class="row">
+    <div class="col-xs-12 calibrator-spacing">
+    </div>
+</div>
+<div class="row">
+    <div align="left" class="col-xs-8 calibrator-backdiv">
+    </div>
+    <div align="right" class="col-xs-4">
+        <button class="btn calibrator-button" type="button" value="s1:confirmObjectSize">
+            Confirm
+        </button>
+    </div>
+</div>

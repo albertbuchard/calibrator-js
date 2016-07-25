@@ -1,0 +1,52 @@
+<div class="row">
+    <div class="col-xs-12">
+        <p>
+            Thank you for calibrating your monitor :
+        </p>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-2">
+    </div>
+    <div class="col-xs-4">
+        Diagonal size : {{ diagonalSize }} inches
+    </div>
+    <div class="col-xs-4">
+        Diagonal resolution : {{ diagonalSizeInPx }} px
+    </div>
+    <div class="col-xs-2">
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-2">
+    </div>
+    <div class="col-xs-4">
+        Pixel density : {{ pixelsPerInch }} px/inch
+    </div>
+    <div class="col-xs-4">
+        Pixel per degree : {{ pixelsPerDegree }} px/degree
+    </div>
+    <div class="col-xs-2">
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12 calibrator-spacing">
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12 calibrator-browser-info">
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12 calibrator-spacing">
+    </div>
+</div>
+<div class="row">
+    <div align="left" class="col-xs-8 calibrator-backdiv">
+    </div>
+    <div align="right" class="col-xs-4">
+        <button class="btn calibrator-button" type="button" value="s3:finalConfirm">
+            Confirm
+        </button>
+    </div>
+</div>

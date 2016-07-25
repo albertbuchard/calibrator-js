@@ -1,0 +1,210 @@
+/**
+ * Container
+ */
+
+.calibrator-container {
+    font-family: 'Josefin Sans', sans-serif;
+    color: #424242;
+    font-weight: 300;
+    font-size: 1.5rem;
+    background: white;
+    border-radius: 0px;
+    width: 80%;
+    margin-top: 15px;
+    margin-bottom: 5px;
+    padding-bottom: 20px;
+    position: relative;
+}
+
+/**
+ * Top div - close icon
+ */
+
+.calibrator-topdiv {
+    text-align: right;
+    padding-right: 4px;
+    padding-top: 2px;
+    font-size: 10pt;
+    position: absolute;
+    top: 0px;
+    right: 0px
+}
+
+/**
+ * Title
+ */
+
+.calibrator-title {
+  margin-top: 2%;
+}
+
+/**
+ * Layout helper
+ */
+
+.calibrator-spacing {
+  height: 50px;
+}
+
+/** 
+ * Links
+ */
+.calibrator-link:hover {
+    opacity: 0.8;
+}
+
+/** 
+ * Guide
+ */
+.calibrator-guide {
+  padding-top: 5px;
+}
+
+/**
+ * Style of the active guide 
+ */
+.calibrator-guide-active {
+    /*background: #ECF3F9;*/
+    /*border: dashed 1px #000;*/
+    box-shadow: 0px 2px 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+
+/** 
+ * Buttons
+ */
+
+.calibrator-button {
+  background: none;
+  border: 2px solid #0069AB;
+  color: #0069AB;
+}
+
+.calibrator-button:hover,
+.calibrator-button:focus,
+.calibrator-button:active {
+  color: #fff;
+  background-color: #0069AB;
+  border-color: #0069AB;
+}
+
+.calibrator-button-back {
+  border: 2px solid #FC0020;
+  color: #FC0020;
+}
+
+.calibrator-button-back:hover,
+.calibrator-button-back:focus,
+.calibrator-button-back:active {
+  color: #fff;
+  background-color: #FC0020;
+  border-color: #FC0020;
+}
+
+/**
+ * Canvas
+ */
+
+.calibrator-canvas {
+    width: 100%;
+    height: 500px;
+}
+
+
+/**
+ * Range
+ */
+
+.calibrator-size-range {
+  -webkit-appearance: none;
+  margin: 18px 0;
+  width: 100%;
+}
+
+.calibrator-size-range {
+  -webkit-appearance: none;
+  margin: 10px 0;
+  width: 100%;
+}
+.calibrator-size-range:focus {
+  outline: none;
+}
+.calibrator-size-range::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 6px;
+  cursor: pointer;
+  animate: 0.2s;
+  box-shadow: 0px 0px 0px #000000;
+  background: #B6B6B6;
+  border-radius: 25px;
+  border: 1px solid #8A8A8A;
+}
+.calibrator-size-range::-webkit-slider-thumb {
+  box-shadow: 1px 1px 1px #828282;
+  border: 1px solid #8A8A8A;
+  height: 14px;
+  width: 25px;
+  border-radius: 6px;
+  background: #DADADA;
+  cursor: pointer;
+  -webkit-appearance: none;
+  margin-top: -5px;
+}
+.calibrator-size-range:focus::-webkit-slider-runnable-track {
+  background: #B6B6B6;
+}
+.calibrator-size-range::-moz-range-track {
+  width: 100%;
+  height: 6px;
+  cursor: pointer;
+  animate: 0.2s;
+  box-shadow: 0px 0px 0px #000000;
+  background: #B6B6B6;
+  border-radius: 25px;
+  border: 1px solid #8A8A8A;
+}
+.calibrator-size-range::-moz-range-thumb {
+  box-shadow: 1px 1px 1px #828282;
+  border: 1px solid #8A8A8A;
+  height: 14px;
+  width: 25px;
+  border-radius: 6px;
+  background: #DADADA;
+  cursor: pointer;
+}
+.calibrator-size-range::-ms-track {
+  width: 100%;
+  height: 6px;
+  cursor: pointer;
+  animate: 0.2s;
+  background: transparent;
+  border-color: transparent;
+  color: transparent;
+}
+.calibrator-size-range::-ms-fill-lower {
+  background: #B6B6B6;
+  border: 1px solid #8A8A8A;
+  border-radius: 50px;
+  box-shadow: 0px 0px 0px #000000;
+}
+.calibrator-size-range::-ms-fill-upper {
+  background: #B6B6B6;
+  border: 1px solid #8A8A8A;
+  border-radius: 50px;
+  box-shadow: 0px 0px 0px #000000;
+}
+.calibrator-size-range::-ms-thumb {
+  box-shadow: 1px 1px 1px #828282;
+  border: 1px solid #8A8A8A;
+  height: 14px;
+  width: 25px;
+  border-radius: 6px;
+  background: #DADADA;
+  cursor: pointer;
+}
+.calibrator-size-range:focus::-ms-fill-lower {
+  background: #B6B6B6;
+}
+.calibrator-size-range:focus::-ms-fill-upper {
+  background: #B6B6B6;
+}

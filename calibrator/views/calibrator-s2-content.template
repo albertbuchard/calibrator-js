@@ -1,0 +1,26 @@
+<div class="row">
+    <div class="col-xs-12">
+        <p>
+            Please take the time to adjust your monitor's brightness and contrast settings
+        until you can distinguish the 12 boxes below and you feel the black and white color are correct.
+        </p>
+    </div>
+</div>
+<div class="col-xs-12">
+    <canvas class="calibrator-canvas">
+        Your browser does not support the canvas element and will not be able to calibrate.
+    </canvas>
+</div>
+<div class="row">
+    <div class="col-xs-12 calibrator-spacing">
+    </div>
+</div>
+<div class="row">
+    <div align="left" class="col-xs-8 calibrator-backdiv">
+    </div>
+    <div align="right" class="col-xs-4">
+        <button class="btn calibrator-button" type="button" value="s2:confirmBrightness">
+            Confirm
+        </button>
+    </div>
+</div>

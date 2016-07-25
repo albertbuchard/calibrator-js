@@ -1,0 +1,31 @@
+<div class="row">
+    <div class="col-xs-12">
+        <p>
+            Please enter your monitor diagonal size (in inches)
+        </p>
+        <div class="form-inline">
+            <div class="form-group">
+                <div class="input-group">
+                    <input class="form-control" id="calibrator-monitor-size" placeholder="monitor diagonal size" type="text">
+                        <div class="input-group-addon">
+                            inches
+                        </div>
+                    </input>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12 calibrator-spacing">
+    </div>
+</div>
+<div class="row">
+    <div align="left" class="col-xs-8 calibrator-backdiv">
+    </div>
+    <div align="right" class="col-xs-4">
+        <button class="btn calibrator-button" type="button" value="s1:confirmManualSize">
+            Confirm
+        </button>
+    </div>
+</div>
