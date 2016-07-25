@@ -1,6 +1,6 @@
 {
   "name": "calibrator-js",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Screen calibrator boilerplate for web based experiments.",
   "main": "calibrator-js/js/calibrator.js",
   "scripts": {
