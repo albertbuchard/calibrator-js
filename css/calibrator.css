@@ -16,6 +16,13 @@
     position: relative;
 }
 
+.calibrator-floatabove {
+  width: 100%;
+  position: absolute;
+  top: 0px;
+  z-index: 10;
+}
+
 /**
  * Top div - close icon
  */

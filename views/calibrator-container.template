@@ -1,27 +1,29 @@
-<div class="container calibrator-container">
-    <div class="calibrator-topdiv">
-        <a class="calibrator-link calibrator-dismiss-icon" href="#">
-            <span aria-hidden="true" class="glyphicon glyphicon-remove">
-            </span>
-        </a>
-    </div>
-    <div align="center" class="col-xs-12 calibrator-guide" id="options">
-        <div class="col-xs-4 calibrator-guide-active" id="calibrator-guide-step1">
-            Step 1: Resolution
+<div class="calibrator-floatabove">
+    <div class="container calibrator-container">
+        <div class="calibrator-topdiv">
+            <a class="calibrator-link calibrator-dismiss-icon" href="#">
+                <span aria-hidden="true" class="glyphicon glyphicon-remove">
+                </span>
+            </a>
         </div>
-        <div class="col-xs-4" id="calibrator-guide-step2">
-            Step 2: Brightness
+        <div align="center" class="col-xs-12 calibrator-guide" id="options">
+            <div class="col-xs-4 calibrator-guide-active" id="calibrator-guide-step1">
+                Step 1: Resolution
+            </div>
+            <div class="col-xs-4" id="calibrator-guide-step2">
+                Step 2: Brightness
+            </div>
+            <div class="col-xs-4" id="calibrator-guide-step3">
+                Step 3: Summary
+            </div>
         </div>
-        <div class="col-xs-4" id="calibrator-guide-step3">
-            Step 3: Summary
+        <div class="col-xs-12 calibrator-title">
+            <h3>
+                {{ title }}
+            </h3>
         </div>
-    </div>
-    <div class="col-xs-12 calibrator-title">
-        <h3>
-            {{ title }}
-        </h3>
-    </div>
-    <div class="col-xs-12 calibrator-content">
-        {{ content }}
+        <div class="col-xs-12 calibrator-content">
+            {{ content }}
+        </div>
     </div>
 </div>

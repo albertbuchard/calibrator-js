@@ -248,7 +248,7 @@ var Calibrator = function () {
 
     /** Handle Resize */
     $(window).resize(function () {
-      this.canvasResized();
+      thisObject.canvasResized();
     });
   }
 

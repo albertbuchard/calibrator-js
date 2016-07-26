@@ -234,7 +234,7 @@ class Calibrator {
 
     /** Handle Resize */
     $(window).resize(function() {
-      this.canvasResized();
+      thisObject.canvasResized();
     });
   }
 
