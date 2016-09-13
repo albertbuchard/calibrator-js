@@ -1,6 +1,7 @@
 # Calibrator.js
 
-Screen calibrator boilerplate for web based experiments.
+Screen calibrator boilerplate for web based experiments. 
+
 
 ## Usage
 Needs Jquery, Bootstrap and Underscore.js. 
@@ -60,7 +61,7 @@ For production use the compiled and minified file : calibrator-compiled.min.js
 https://albertbuchard.github.io/calibrator-js-docs/
 
 
-## Authors
+## Developped in the Bavelier Lab by
 * Albert Buchard
 * Amanda Yung
 * Augustin Joessel

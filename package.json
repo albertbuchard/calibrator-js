@@ -1,7 +1,7 @@
 {
   "name": "calibrator-js",
   "version": "1.0.2",
-  "description": "Screen calibrator boilerplate for web based experiments.",
+  "description": "Screen calibrator boilerplate for web based experiments. Developped in the Bavelier Lab.",
   "main": "calibrator-js/js/calibrator.js",
   "scripts": {
     "generate-docs": "jsdoc -c jsdoc.json"

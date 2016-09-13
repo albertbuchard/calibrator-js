@@ -14,7 +14,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * 
  * Authors. Albert Buchard, Amanda Yung and Augustin Joessel
  *
- * Requires: Underscore.js and jQuery
+ * Requires: lodash.js and jQuery
  * 
  * LICENSE MIT 
  */
@@ -215,7 +215,7 @@ var Calibrator = function () {
      * @type {boolean}
      * @private
      */
-    this._showWhenReady = showWhenReady == true ? true : false;
+    this._showWhenReady = showWhenReady === true ? true : false;
 
     /** Setup callback */
 
@@ -250,6 +250,8 @@ var Calibrator = function () {
     $(window).resize(function () {
       thisObject.canvasResized();
     });
+
+    console.warn("created");
   }
 
   /**
@@ -706,7 +708,7 @@ var Calibrator = function () {
       if (this.callbackWhenClosed) {
         this.callbackWhenClosed(returnObject);
       } else {
-        console.log("Calibrator.js: Has been dismisse ");
+        console.log("Calibrator.js: Has been dismissed");
         console.log(returnObject);
       }
     }
@@ -792,7 +794,7 @@ var Calibrator = function () {
     value: function setRatioFromRange() {
       var element = arguments.length <= 0 || arguments[0] === undefined ? null : arguments[0];
 
-      if (element == null) {
+      if (element === null) {
         element = $(".calibrator-size-range");
       }
 
@@ -807,7 +809,7 @@ var Calibrator = function () {
     value: function setRangeFromRatio() {
       var element = arguments.length <= 0 || arguments[0] === undefined ? null : arguments[0];
 
-      if (element == null) {
+      if (element === null) {
         element = $(".calibrator-size-range");
       }
 
@@ -892,22 +894,16 @@ var Calibrator = function () {
       switch (this.currentStep) {
         case this.STEP_SCREENSIZE_ASK_IFKNOWS:
           return this.STEP_TITLES[0];
-          break;
         case this.STEP_SCREENSIZE_ENTER_KNOWNSIZE:
           return this.STEP_TITLES[0];
-          break;
         case this.STEP_SCREENSIZE_CHOOSE_OBJECT:
           return this.STEP_TITLES[0];
-          break;
         case this.STEP_SCREENSIZE_ENTER_OBJECTSIZE:
           return this.STEP_TITLES[0];
-          break;
         case this.STEP_BRIGHTNESS:
           return this.STEP_TITLES[1];
-          break;
         case this.STEP_SUMMARY:
           return this.STEP_TITLES[2];
-          break;
 
       }
     }
@@ -924,19 +920,14 @@ var Calibrator = function () {
       switch (this.currentStep) {
         case this.STEP_SCREENSIZE_ASK_IFKNOWS:
           return this.templateManager.render("knownsize");
-          break;
         case this.STEP_SCREENSIZE_ENTER_KNOWNSIZE:
           return this.templateManager.render("enterknownsize");
-          break;
         case this.STEP_SCREENSIZE_CHOOSE_OBJECT:
           return this.templateManager.render("chooseobject");
-          break;
         case this.STEP_SCREENSIZE_ENTER_OBJECTSIZE:
           return this.templateManager.render("specifystandardsize");
-          break;
         case this.STEP_BRIGHTNESS:
           return this.templateManager.render("setbrightness");
-          break;
         case this.STEP_SUMMARY:
           return this.templateManager.render("summary", {
             diagonalSize: this.diagonalSize.toFixed(this.FLOAT_PRECISION),
@@ -944,7 +935,6 @@ var Calibrator = function () {
             pixelsPerDegree: this.pixelsPerDegree.toFixed(this.FLOAT_PRECISION),
             pixelsPerInch: this.pixelsPerInch.toFixed(this.FLOAT_PRECISION)
           });
-          break;
 
       }
     }
@@ -962,7 +952,7 @@ var Calibrator = function () {
   }, {
     key: "diagonalSize",
     set: function set(value) {
-      if (value == null) {
+      if (value === null) {
         this._diagonalSize = null;
         return;
       }
@@ -1098,7 +1088,7 @@ var Calibrator = function () {
   }, {
     key: "currentImage",
     set: function set(imageKey) {
-      if (_.contains(this.IMAGES, imageKey)) {
+      if (this.IMAGES.indexOf(imageKey) !== -1) {
         this._currentImage = imageKey;
         this.updateCanvasHeight();
         this.drawImage();
@@ -1216,9 +1206,7 @@ var TemplateManager = function () {
     _classCallCheck(this, TemplateManager);
 
     /* Allow double curly bracket syntax in the template html: {{variable}} */
-    _.templateSettings = {
-      interpolate: /\{\{(.+?)\}\}/g
-    };
+    _.templateSettings.interpolate = /\{\{(.+?)\}\}/g;
 
     /**
      * Contains all templates urls
@@ -1252,8 +1240,8 @@ var TemplateManager = function () {
         thisObject.store(key, raw);
 
         /** checks if all template are loaded */
-        if (_.every(_.allKeys(thisObject.viewPaths), function (key) {
-          return _.contains(_.allKeys(thisObject.cached), key);
+        if (_.every(_.keys(thisObject.viewPaths), function (key) {
+          return _.has(thisObject.cached, key);
         })) {
           /** All templates loaded, call the supplied callback. */
           thisObject.callbackWhenLoaded();

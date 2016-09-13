@@ -6,7 +6,7 @@
  * 
  * Authors. Albert Buchard, Amanda Yung and Augustin Joessel
  *
- * Requires: Underscore.js and jQuery
+ * Requires: lodash.js and jQuery
  * 
  * LICENSE MIT 
  */
@@ -20,7 +20,7 @@ var delimiterIndices = findAllIndices("/", calibratorFullpath);
 calibratorFullpath = calibratorFullpath.substr(0, delimiterIndices[delimiterIndices.length - 2]);
 
 /* === Add the calibrator css once the page is loaded === */
-document.addEventListener("DOMContentLoaded", function(event) {
+document.addEventListener("DOMContentLoaded", function (event) {
   var head = document.getElementsByTagName('head')[0];
   var link = document.createElement('link');
   link.rel = 'stylesheet';
@@ -75,7 +75,7 @@ class Calibrator {
     };
 
     var thisObject = this;
-    this.templateManager = new TemplateManager(this.VIEWS_PATHS, function() {
+    this.templateManager = new TemplateManager(this.VIEWS_PATHS, function () {
       thisObject.templatesAreLoaded();
     });
 
@@ -96,7 +96,7 @@ class Calibrator {
     this.IMAGES = {
       [this.IMAGE_KEY_CREDITCARD]: [this.calibratorFullpath + "/img/card.png", [384, 242], 8.6, 1.2],
       [this.IMAGE_KEY_CD]: [this.calibratorFullpath + "/img/cd.png", [596, 596], 12, 1.2]
-    }
+    };
 
     /**
      * Distance of the subject from the screen in cm, default to 50 cm (arm length)
@@ -201,7 +201,7 @@ class Calibrator {
      * @type {boolean}
      * @private
      */
-    this._showWhenReady = (showWhenReady == true) ? true : false;
+    this._showWhenReady = (showWhenReady === true) ? true : false;
 
     /** Setup callback */
 
@@ -233,9 +233,11 @@ class Calibrator {
     }
 
     /** Handle Resize */
-    $(window).resize(function() {
+    $(window).resize(function () {
       thisObject.canvasResized();
     });
+
+    console.warn("created");
   }
 
   /**
@@ -349,7 +351,7 @@ class Calibrator {
      */
     $(".calibrator-title").animate({
       opacity: 0
-    }, 300, function() {
+    }, 300, function () {
       $(".calibrator-title").html("<h3>" + thisObject.currentTitle + "</h3>");
       $(".calibrator-title").animate({
         opacity: 300
@@ -361,7 +363,7 @@ class Calibrator {
      */
     $(".calibrator-content").animate({
       opacity: 0
-    }, 300, function() {
+    }, 300, function () {
 
       /** Load content */
       $(".calibrator-content").html(thisObject.currentContent);
@@ -377,7 +379,7 @@ class Calibrator {
       /** Show content div */
       $(".calibrator-content").animate({
         opacity: 300
-      }, 100, function() {
+      }, 100, function () {
 
         /** Reset events after animation is done and DOM is ready */
         thisObject.resetEvents();
@@ -394,23 +396,23 @@ class Calibrator {
    */
   updateGuide() {
     if ($(".calibrator-guide").length) {
-      _.each($(".calibrator-guide div"), function(element) {
+      _.each($(".calibrator-guide div"), function (element) {
         $(element).removeClass("calibrator-guide-active");
       });
 
       switch (this.currentStep) {
-        case this.STEP_SCREENSIZE_ASK_IFKNOWS:
-        case this.STEP_SCREENSIZE_ENTER_KNOWNSIZE:
-        case this.STEP_SCREENSIZE_CHOOSE_OBJECT:
-        case this.STEP_SCREENSIZE_ENTER_OBJECTSIZE:
-          $("#calibrator-guide-step1").addClass("calibrator-guide-active");
-          break;
-        case this.STEP_BRIGHTNESS:
-          $("#calibrator-guide-step2").addClass("calibrator-guide-active");
-          break;
-        case this.STEP_SUMMARY:
-          $("#calibrator-guide-step3").addClass("calibrator-guide-active");
-          break;
+      case this.STEP_SCREENSIZE_ASK_IFKNOWS:
+      case this.STEP_SCREENSIZE_ENTER_KNOWNSIZE:
+      case this.STEP_SCREENSIZE_CHOOSE_OBJECT:
+      case this.STEP_SCREENSIZE_ENTER_OBJECTSIZE:
+        $("#calibrator-guide-step1").addClass("calibrator-guide-active");
+        break;
+      case this.STEP_BRIGHTNESS:
+        $("#calibrator-guide-step2").addClass("calibrator-guide-active");
+        break;
+      case this.STEP_SUMMARY:
+        $("#calibrator-guide-step3").addClass("calibrator-guide-active");
+        break;
       }
     } else {
       console.log("Calibrator.js: calibrator-guide div not in the dom.");
@@ -438,20 +440,20 @@ class Calibrator {
      */
     var thisObject = this;
 
-    $(".calibrator-info-icon").on("click", function(e) {
+    $(".calibrator-info-icon").on("click", function (e) {
       thisObject.toggleInfo();
     });
 
-    $(".calibrator-dismiss-icon").on("click", function(e) {
+    $(".calibrator-dismiss-icon").on("click", function (e) {
       thisObject.callbackNow(0);
       thisObject.hide();
     });
 
-    $(".calibrator-button").on("click", function(e) {
+    $(".calibrator-button").on("click", function (e) {
       thisObject.buttonClicked(e);
     });
 
-    $(".calibrator-size-range").on("change", function(e) {
+    $(".calibrator-size-range").on("change", function (e) {
       thisObject.setRatioFromRange($(e.target));
       thisObject.drawImage();
       thisObject.updateSummaryInformation();
@@ -478,31 +480,31 @@ class Calibrator {
    */
   setStepLogic() {
     switch (this.currentStep) {
-      case this.STEP_SCREENSIZE_ENTER_KNOWNSIZE:
-        /**
-         * If diagonalSize is valid - set the input to its value, else set _diagonalSize to null
-         */
-        if ($.isNumeric(this.diagonalSize)) {
-          $("#calibrator-monitor-size")[0].value = this.diagonalSize.toFixed(this.FLOAT_PRECISION);
-        } else {
-          this.diagonalSize = null;
-        }
-        break;
-      case this.STEP_SCREENSIZE_CHOOSE_OBJECT:
-        // no logic
-        break;
-      case this.STEP_SCREENSIZE_ENTER_OBJECTSIZE:
-        this.setRangeFromRatio();
-        this.setDiagonalSizeFromRatio();
-        this.drawImage();
-        this.updateSummaryInformation();
-        break;
-      case this.STEP_BRIGHTNESS:
-        this.drawGrayScale();
-        console.log(this.pixelsPerDegree);
-        break;
-      case this.STEP_SUMMARY:
-        break;
+    case this.STEP_SCREENSIZE_ENTER_KNOWNSIZE:
+      /**
+       * If diagonalSize is valid - set the input to its value, else set _diagonalSize to null
+       */
+      if ($.isNumeric(this.diagonalSize)) {
+        $("#calibrator-monitor-size")[0].value = this.diagonalSize.toFixed(this.FLOAT_PRECISION);
+      } else {
+        this.diagonalSize = null;
+      }
+      break;
+    case this.STEP_SCREENSIZE_CHOOSE_OBJECT:
+      // no logic
+      break;
+    case this.STEP_SCREENSIZE_ENTER_OBJECTSIZE:
+      this.setRangeFromRatio();
+      this.setDiagonalSizeFromRatio();
+      this.drawImage();
+      this.updateSummaryInformation();
+      break;
+    case this.STEP_BRIGHTNESS:
+      this.drawGrayScale();
+      console.log(this.pixelsPerDegree);
+      break;
+    case this.STEP_SUMMARY:
+      break;
 
     }
   }
@@ -514,21 +516,21 @@ class Calibrator {
    */
   goToPreviousStep() {
     switch (this.currentStep) {
-      case this.STEP_SCREENSIZE_ENTER_KNOWNSIZE:
-        this.goToStep(this.STEP_SCREENSIZE_ASK_IFKNOWS);
-        break;
-      case this.STEP_SCREENSIZE_CHOOSE_OBJECT:
-        this.goToStep(this.STEP_SCREENSIZE_ASK_IFKNOWS);
-        break;
-      case this.STEP_SCREENSIZE_ENTER_OBJECTSIZE:
-        this.goToStep(this.STEP_SCREENSIZE_CHOOSE_OBJECT);
-        break;
-      case this.STEP_BRIGHTNESS:
-        this.goToStep(this.STEP_SCREENSIZE_ASK_IFKNOWS);
-        break;
-      case this.STEP_SUMMARY:
-        this.goToStep(this.STEP_BRIGHTNESS);
-        break;
+    case this.STEP_SCREENSIZE_ENTER_KNOWNSIZE:
+      this.goToStep(this.STEP_SCREENSIZE_ASK_IFKNOWS);
+      break;
+    case this.STEP_SCREENSIZE_CHOOSE_OBJECT:
+      this.goToStep(this.STEP_SCREENSIZE_ASK_IFKNOWS);
+      break;
+    case this.STEP_SCREENSIZE_ENTER_OBJECTSIZE:
+      this.goToStep(this.STEP_SCREENSIZE_CHOOSE_OBJECT);
+      break;
+    case this.STEP_BRIGHTNESS:
+      this.goToStep(this.STEP_SCREENSIZE_ASK_IFKNOWS);
+      break;
+    case this.STEP_SUMMARY:
+      this.goToStep(this.STEP_BRIGHTNESS);
+      break;
 
     }
   }
@@ -566,46 +568,46 @@ class Calibrator {
     var buttonValue = event.target.value;
 
     switch (buttonValue) {
-      case this.BUTTON_SIZEKNOWN:
-        this.goToStep(this.STEP_SCREENSIZE_ENTER_KNOWNSIZE);
-        break;
-      case this.BUTTON_SIZEUNKNOWN:
-        this.goToStep(this.STEP_SCREENSIZE_CHOOSE_OBJECT);
-        break;
+    case this.BUTTON_SIZEKNOWN:
+      this.goToStep(this.STEP_SCREENSIZE_ENTER_KNOWNSIZE);
+      break;
+    case this.BUTTON_SIZEUNKNOWN:
+      this.goToStep(this.STEP_SCREENSIZE_CHOOSE_OBJECT);
+      break;
 
-      case this.BUTTON_CONFIRM_MANUALSIZE:
-        if ($.isNumeric($("#calibrator-monitor-size")[0].value)) {
-          this.diagonalSize = Number($("#calibrator-monitor-size")[0].value);
-          this.goToStep(this.STEP_BRIGHTNESS);
-        } else {
-          console.log("Calibrator.js: monitor size is invalid");
-        }
-        break;
-
-      case this.BUTTON_CHOOSE_CREDITCARD:
-        this._currentImage = this.IMAGE_KEY_CREDITCARD;
-        this.updateCanvasHeight();
-        this.goToStep(this.STEP_SCREENSIZE_ENTER_OBJECTSIZE);
-        break;
-      case this.BUTTON_CHOOSE_COMPACTDISK:
-        this._currentImage = this.IMAGE_KEY_CD;
-        this.updateCanvasHeight();
-        this.goToStep(this.STEP_SCREENSIZE_ENTER_OBJECTSIZE);
-        break;
-      case this.BUTTON_CONFIRM_OBJECTSIZE:
+    case this.BUTTON_CONFIRM_MANUALSIZE:
+      if ($.isNumeric($("#calibrator-monitor-size")[0].value)) {
+        this.diagonalSize = Number($("#calibrator-monitor-size")[0].value);
         this.goToStep(this.STEP_BRIGHTNESS);
-        break;
-      case this.BUTTON_CONFIRM_BRIGHTNESS:
-        this.goToStep(this.STEP_SUMMARY);
-        break;
-      case this.BUTTON_FINAL_CONFIRM:
-        this.callbackNow(1);
-        this.hide();
-        break;
+      } else {
+        console.log("Calibrator.js: monitor size is invalid");
+      }
+      break;
 
-      case this.BUTTON_BACK:
-        this.goToPreviousStep();
-        break;
+    case this.BUTTON_CHOOSE_CREDITCARD:
+      this._currentImage = this.IMAGE_KEY_CREDITCARD;
+      this.updateCanvasHeight();
+      this.goToStep(this.STEP_SCREENSIZE_ENTER_OBJECTSIZE);
+      break;
+    case this.BUTTON_CHOOSE_COMPACTDISK:
+      this._currentImage = this.IMAGE_KEY_CD;
+      this.updateCanvasHeight();
+      this.goToStep(this.STEP_SCREENSIZE_ENTER_OBJECTSIZE);
+      break;
+    case this.BUTTON_CONFIRM_OBJECTSIZE:
+      this.goToStep(this.STEP_BRIGHTNESS);
+      break;
+    case this.BUTTON_CONFIRM_BRIGHTNESS:
+      this.goToStep(this.STEP_SUMMARY);
+      break;
+    case this.BUTTON_FINAL_CONFIRM:
+      this.callbackNow(1);
+      this.hide();
+      break;
+
+    case this.BUTTON_BACK:
+      this.goToPreviousStep();
+      break;
     }
   }
 
@@ -619,9 +621,9 @@ class Calibrator {
   updateSummaryInformation() {
     var thisObject = this;
     if ($(".calibrator-diagonal-size-inches").length) {
-      _.each($(".calibrator-diagonal-size-inches"), function(element) {
+      _.each($(".calibrator-diagonal-size-inches"), function (element) {
         $(element).html(thisObject.diagonalSize.toFixed(thisObject.FLOAT_PRECISION) + " inches");
-      })
+      });
     }
 
   }
@@ -641,7 +643,7 @@ class Calibrator {
       pixelsPerInch: null,
       pixelsPerDegree: null
 
-    }
+    };
 
     if (this.diagonalSize) {
       returnObject.status = status;
@@ -655,7 +657,7 @@ class Calibrator {
     if (this.callbackWhenClosed) {
       this.callbackWhenClosed(returnObject);
     } else {
-      console.log("Calibrator.js: Has been dismisse ")
+      console.log("Calibrator.js: Has been dismissed");
       console.log(returnObject);
     }
 
@@ -700,13 +702,13 @@ class Calibrator {
   canvasResized() {
     this.fitCanvasToContainer();
     switch (this.currentStep) {
-      case this.STEP_SCREENSIZE_ENTER_OBJECTSIZE:
-        this.setDiagonalSizeFromRatio();
-        this.drawImage();
-        break;
-      case this.STEP_BRIGHTNESS:
-        this.drawGrayScale();
-        break;
+    case this.STEP_SCREENSIZE_ENTER_OBJECTSIZE:
+      this.setDiagonalSizeFromRatio();
+      this.drawImage();
+      break;
+    case this.STEP_BRIGHTNESS:
+      this.drawGrayScale();
+      break;
     }
   }
 
@@ -730,8 +732,8 @@ class Calibrator {
   }
 
   setRatioFromRange(element = null) {
-    if (element == null) {
-      element = $(".calibrator-size-range")
+    if (element === null) {
+      element = $(".calibrator-size-range");
     }
 
     if ($(element).length) {
@@ -742,8 +744,8 @@ class Calibrator {
   }
 
   setRangeFromRatio(element = null) {
-    if (element == null) {
-      element = $(".calibrator-size-range")
+    if (element === null) {
+      element = $(".calibrator-size-range");
     }
 
     if ($(element).length) {
@@ -794,7 +796,7 @@ class Calibrator {
       }
 
     } else {
-      throw new Error("Calibrator.js: the canvas element is not present, cannot drawImage().")
+      throw new Error("Calibrator.js: the canvas element is not present, cannot drawImage().");
     }
 
     // pxpercm = Math.round(window.pxperinch / 2.54);
@@ -820,24 +822,18 @@ class Calibrator {
    */
   get currentTitle() {
     switch (this.currentStep) {
-      case this.STEP_SCREENSIZE_ASK_IFKNOWS:
-        return (this.STEP_TITLES[0]);
-        break;
-      case this.STEP_SCREENSIZE_ENTER_KNOWNSIZE:
-        return (this.STEP_TITLES[0]);
-        break;
-      case this.STEP_SCREENSIZE_CHOOSE_OBJECT:
-        return (this.STEP_TITLES[0]);
-        break;
-      case this.STEP_SCREENSIZE_ENTER_OBJECTSIZE:
-        return (this.STEP_TITLES[0]);
-        break;
-      case this.STEP_BRIGHTNESS:
-        return (this.STEP_TITLES[1]);
-        break;
-      case this.STEP_SUMMARY:
-        return (this.STEP_TITLES[2]);
-        break;
+    case this.STEP_SCREENSIZE_ASK_IFKNOWS:
+      return (this.STEP_TITLES[0]);
+    case this.STEP_SCREENSIZE_ENTER_KNOWNSIZE:
+      return (this.STEP_TITLES[0]);
+    case this.STEP_SCREENSIZE_CHOOSE_OBJECT:
+      return (this.STEP_TITLES[0]);
+    case this.STEP_SCREENSIZE_ENTER_OBJECTSIZE:
+      return (this.STEP_TITLES[0]);
+    case this.STEP_BRIGHTNESS:
+      return (this.STEP_TITLES[1]);
+    case this.STEP_SUMMARY:
+      return (this.STEP_TITLES[2]);
 
     }
 
@@ -850,29 +846,23 @@ class Calibrator {
    */
   get currentContent() {
     switch (this.currentStep) {
-      case this.STEP_SCREENSIZE_ASK_IFKNOWS:
-        return (this.templateManager.render("knownsize"));
-        break;
-      case this.STEP_SCREENSIZE_ENTER_KNOWNSIZE:
-        return (this.templateManager.render("enterknownsize"));
-        break;
-      case this.STEP_SCREENSIZE_CHOOSE_OBJECT:
-        return (this.templateManager.render("chooseobject"));
-        break;
-      case this.STEP_SCREENSIZE_ENTER_OBJECTSIZE:
-        return (this.templateManager.render("specifystandardsize"));
-        break;
-      case this.STEP_BRIGHTNESS:
-        return (this.templateManager.render("setbrightness"));
-        break;
-      case this.STEP_SUMMARY:
-        return (this.templateManager.render("summary", {
-          diagonalSize: this.diagonalSize.toFixed(this.FLOAT_PRECISION),
-          diagonalSizeInPx: Math.ceil(this.diagonalSizeInPx),
-          pixelsPerDegree: this.pixelsPerDegree.toFixed(this.FLOAT_PRECISION),
-          pixelsPerInch: this.pixelsPerInch.toFixed(this.FLOAT_PRECISION)
-        }));
-        break;
+    case this.STEP_SCREENSIZE_ASK_IFKNOWS:
+      return (this.templateManager.render("knownsize"));
+    case this.STEP_SCREENSIZE_ENTER_KNOWNSIZE:
+      return (this.templateManager.render("enterknownsize"));
+    case this.STEP_SCREENSIZE_CHOOSE_OBJECT:
+      return (this.templateManager.render("chooseobject"));
+    case this.STEP_SCREENSIZE_ENTER_OBJECTSIZE:
+      return (this.templateManager.render("specifystandardsize"));
+    case this.STEP_BRIGHTNESS:
+      return (this.templateManager.render("setbrightness"));
+    case this.STEP_SUMMARY:
+      return (this.templateManager.render("summary", {
+        diagonalSize: this.diagonalSize.toFixed(this.FLOAT_PRECISION),
+        diagonalSizeInPx: Math.ceil(this.diagonalSizeInPx),
+        pixelsPerDegree: this.pixelsPerDegree.toFixed(this.FLOAT_PRECISION),
+        pixelsPerInch: this.pixelsPerInch.toFixed(this.FLOAT_PRECISION)
+      }));
 
     }
   }
@@ -887,7 +877,7 @@ class Calibrator {
    * @private
    */
   set diagonalSize(value) {
-    if (value == null) {
+    if (value === null) {
       this._diagonalSize = null;
       return;
     }
@@ -1000,7 +990,7 @@ class Calibrator {
    * @private
    */
   set currentImage(imageKey) {
-    if (_.contains(this.IMAGES, imageKey)) {
+    if (this.IMAGES.indexOf(imageKey) !== -1) {
       this._currentImage = imageKey;
       this.updateCanvasHeight();
       this.drawImage();
@@ -1015,7 +1005,7 @@ class Calibrator {
     if (this._currentImage) {
       return (this._currentImage);
     } else {
-      console.log("Calibrator.js: currentImage is not set.")
+      console.log("Calibrator.js: currentImage is not set.");
       return (null);
     }
 
@@ -1097,9 +1087,7 @@ class TemplateManager {
   constructor(viewPaths = mandatory(), callbackWhenLoaded = null) {
 
     /* Allow double curly bracket syntax in the template html: {{variable}} */
-    _.templateSettings = {
-      interpolate: /\{\{(.+?)\}\}/g
-    };
+    _.templateSettings.interpolate = /\{\{(.+?)\}\}/g;
 
     /**
      * Contains all templates urls
@@ -1117,24 +1105,24 @@ class TemplateManager {
     if (callbackWhenLoaded) {
       this.callbackWhenLoaded = callbackWhenLoaded;
     } else {
-      this.callbackWhenLoaded = function() {
+      this.callbackWhenLoaded = function () {
         console.log("TemplateManager.js: all templates loaded.");
-      }
+      };
     }
 
     /* Keeps reference to the current object */
     var thisObject = this;
 
     /* Caches every templates asynchronously */
-    _.each(this.viewPaths, function(value, key, list) {
-      $.get(thisObject.viewPaths[key], function(raw) {
+    _.each(this.viewPaths, function (value, key, list) {
+      $.get(thisObject.viewPaths[key], function (raw) {
 
         /** store after loading */
         thisObject.store(key, raw);
 
         /** checks if all template are loaded */
-        if (_.every(_.allKeys(thisObject.viewPaths), function(key) {
-            return (_.contains(_.allKeys(thisObject.cached), key));
+        if (_.every(_.keys(thisObject.viewPaths), function (key) {
+            return (_.has(thisObject.cached, key));
           })) {
           /** All templates loaded, call the supplied callback. */
           thisObject.callbackWhenLoaded();
@@ -1155,7 +1143,7 @@ class TemplateManager {
     if (this.isCached(name)) {
       return (this.cached[name](variables));
     } else {
-      $.get(this.urlFor(name), function(raw) {
+      $.get(this.urlFor(name), function (raw) {
         thisObject.store(name, raw);
         thisObject.render(name, variables);
       });
@@ -1173,7 +1161,7 @@ class TemplateManager {
     if (this.isCached(name)) {
       $(target).append(this.cached[name](variables));
     } else {
-      $.get(this.urlFor(name), function(raw) {
+      $.get(this.urlFor(name), function (raw) {
         thisObject.store(name, raw);
         thisObject.renderInTarget(name, variables, target);
       });
@@ -1198,7 +1186,7 @@ class TemplateManager {
    */
   prefetch(name) {
     var thisObject = this;
-    $.get(this.urlFor(name), function(raw) {
+    $.get(this.urlFor(name), function (raw) {
       thisObject.store(name, raw);
     });
   }
@@ -1275,6 +1263,6 @@ function findAllIndices(needle = mandatory(), haystack = mandatory()) {
   if (indices.length) {
     return (indices);
   } else {
-    return (-1)
+    return (-1);
   }
 }
