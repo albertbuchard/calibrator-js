@@ -250,8 +250,6 @@ var Calibrator = function () {
     $(window).resize(function () {
       thisObject.canvasResized();
     });
-
-    console.warn("created");
   }
 
   /**

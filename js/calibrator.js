@@ -237,7 +237,6 @@ class Calibrator {
       thisObject.canvasResized();
     });
 
-    console.warn("created");
   }
 
   /**
