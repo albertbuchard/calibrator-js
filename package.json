@@ -44,6 +44,6 @@
   },
   "homepage": "https://github.com/albertbuchard/calibrator-js#readme",
   "devDependencies": {
-    "jsdoc-baseline": "https://github.com/hegemonic/baseline/tarball/master"
+    "jsdoc-baseline": "https://github.com/hegemonic/baseline/tarball/222e13a"
   }
 }
